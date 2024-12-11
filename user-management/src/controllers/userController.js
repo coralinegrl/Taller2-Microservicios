@@ -1,40 +1,41 @@
 const User = require('../models/User');
+const grpc = require('@grpc/grpc-js');
 
-exports.createUser = async (req, res) => {
+exports.createUserGRPC = async (call, callback) => {
   try {
-    const user = await User.create(req.body);
-    res.status(201).json(user);
+    const user = await User.create(call.request);
+    callback(null, user);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    callback(error, null);
   }
 };
 
-exports.getUser = async (req, res) => {
+exports.getUserGRPC = async (call, callback) => {
   try {
-    const user = await User.findByPk(req.params.id);
-    if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
-    res.json(user);
+    const user = await User.findByPk(call.request.id);
+    if (!user) return callback({ code: grpc.status.NOT_FOUND, message: 'Usuario no encontrado' });
+    callback(null, user);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    callback(error, null);
   }
 };
 
-exports.updateUser = async (req, res) => {
+exports.updateUserGRPC = async (call, callback) => {
   try {
-    const [updated] = await User.update(req.body, { where: { id: req.params.id } });
-    if (!updated) return res.status(404).json({ error: 'Usuario no encontrado' });
-    res.json({ message: 'Usuario actualizado' });
+    const [updated] = await User.update(call.request, { where: { id: call.request.id } });
+    if (!updated) return callback({ code: grpc.status.NOT_FOUND, message: 'Usuario no encontrado' });
+    callback(null, call.request);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    callback(error, null);
   }
 };
 
-exports.deleteUser = async (req, res) => {
+exports.deleteUserGRPC = async (call, callback) => {
   try {
-    const deleted = await User.destroy({ where: { id: req.params.id } });
-    if (!deleted) return res.status(404).json({ error: 'Usuario no encontrado' });
-    res.json({ message: 'Usuario eliminado' });
+    const deleted = await User.destroy({ where: { id: call.request.id } });
+    if (!deleted) return callback({ code: grpc.status.NOT_FOUND, message: 'Usuario no encontrado' });
+    callback(null, {});
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    callback(error, null);
   }
 };
