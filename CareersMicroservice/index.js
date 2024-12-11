@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const { connectRabbitMQ } = require('./eventPublisher');
 
 // Importar rutas
 const careersRouter = require('./routes/careers');
@@ -18,6 +19,11 @@ mongoose.connect('mongodb://localhost:27017/carrerasDB')
     .catch(err => console.error('Error conectando a MongoDB:', err));
 
 
+// Conectar a RabbitMQ
+connectRabbitMQ().catch((err) => {
+    console.error('Error conectando a RabbitMQ:', err);
+  });
+  
 // Rutas
 app.use('/careers', careersRouter); // Rutas de carreras
 app.use('/subjects', subjectsRouter); // Rutas de asignaturas
