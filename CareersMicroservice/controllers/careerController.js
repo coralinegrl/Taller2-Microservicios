@@ -12,10 +12,18 @@ exports.getAllCareers = async (req, res) => {
 
 exports.createCareer = async (req, res) => {
     try {
-        const newCareer = new Career(req.body);
-        const savedCareer = await newCareer.save();
-        await publishEvent('careers', { action: 'create', career: savedCareer });
-        res.status(201).json(savedCareer);
+        const { name, code } = req.body;
+
+        // Verificar que el código no exista ya
+        const existingCareer = await Career.findOne({ code });
+        if (existingCareer) {
+            return res.status(400).json({ message: 'El código de la carrera ya existe' });
+        }
+
+        const newCareer = new Career({ name, code });
+        await newCareer.save();
+
+        res.status(201).json(newCareer);
     } catch (error) {
         res.status(500).json({ message: 'Error al crear la carrera', error });
     }
