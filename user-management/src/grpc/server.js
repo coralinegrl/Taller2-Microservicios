@@ -13,21 +13,22 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
 });
 const userProto = grpc.loadPackageDefinition(packageDefinition).user;
 
-const userController = require('../controllers/userController');
+const UserController = require('../controllers/userController');
 
 // Crear servidor gRPC
 const server = new grpc.Server();
 
 server.addService(userProto.UserService.service, {
-  CreateUser: userController.createUserGRPC,
-  GetUser: userController.getUserGRPC,
-  UpdateUser: userController.updateUserGRPC,
-  DeleteUser: userController.deleteUserGRPC
+  CreateUser: UserController.createUserGRPC,
+  GetUser: UserController.getUserGRPC,
+  UpdateUser:UserController.updateUserGRPC,
+  deleteUser:UserController.deleteUserGRPC,
+  listUsers:UserController.listUsersGRPC,
+  
 });
 
 const PORT = '50051';
 
-server.bindAsync(`0.0.0.0:${PORT}`, grpc.ServerCredentials.createInsecure(), () => {
+server.bindAsync(`127.0.0.1:${PORT}`, grpc.ServerCredentials.createInsecure(), () => {
   console.log(`🟢 Servidor gRPC corriendo en el puerto ${PORT}`);
-//   server.start();
 });

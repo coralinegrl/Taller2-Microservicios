@@ -3,10 +3,63 @@ syntax = "proto3";
 package user;
 
 service UserService {
-  rpc CreateUser (User) returns (UserResponse);
-  rpc GetUser (UserRequest) returns (UserResponse);
-  rpc UpdateUser (User) returns (UserResponse);
-  rpc DeleteUser (UserRequest) returns (Empty);
+  rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
+  rpc GetUser (GetUserRequest) returns (GetUserResponse);
+  rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse);
+  rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
+  rpc ListUsers (ListUsersRequest) returns (ListUsersResponse);
+}
+
+message CreateUserRequest {
+  string nombre = 1;
+  string primer_apellido = 2;
+  string segundo_apellido = 3;
+  string correo_electronico = 4;
+  string contrasena = 5;
+}
+
+message CreateUserResponse {
+  string message = 1;
+  int32 user_id = 2;
+}
+
+message GetUserRequest {
+  int32 user_id = 1;
+}
+
+message GetUserResponse {
+  string message = 1;
+  User user = 2;
+}
+
+message UpdateUserRequest {
+  int32 user_id = 1;
+  string nombre = 2;
+  string primer_apellido = 3;
+  string segundo_apellido = 4;
+  string correo_electronico = 5;
+  string contrasena = 6;
+}
+
+message UpdateUserResponse {
+  string message = 1;
+  int32 user_id = 2;
+}
+
+message DeleteUserRequest {
+  int32 user_id = 1;
+}
+
+message DeleteUserResponse {
+  string message = 1;
+  int32 user_id = 2;
+}
+
+message ListUsersRequest {}
+
+message ListUsersResponse {
+  string message = 1;
+  repeated User users = 2;
 }
 
 message User {
@@ -17,16 +70,3 @@ message User {
   string correo_electronico = 5;
   string contrasena = 6;
 }
-
-message UserRequest {
-  int32 id = 1;
-}
-
-message UserResponse {
-  int32 id = 1;
-  string nombre = 2;
-  string primer_apellido = 3;
-  string correo_electronico = 4;
-}
-
-message Empty {}
