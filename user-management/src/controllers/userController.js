@@ -64,7 +64,7 @@ exports.getUserGRPC = async (call, callback) => {
   }
 };
 
-//  UpdateUser: Verifica si el usuario existe antes de actualizarlo
+//  Verifica si el usuario existe antes de actualizarlo
 exports.updateUserGRPC = async (call, callback) => {
   try {
     const { user_id, nombre, primer_apellido, segundo_apellido, correo_electronico, contrasena } = call.request;
