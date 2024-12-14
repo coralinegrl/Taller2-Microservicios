@@ -1,6 +1,6 @@
 const express = require('express');
 const { getAllCareers, createCareer } = require('../controllers/careerController');
-const { validateCareerRequest } = require('../validators/careerValidator');
+const { validateCareerRequest } = require('../middlewares/careerValidator');
 const { authenticateToken } = require('../middlewares/authMiddleware');
 const router = express.Router();
 
