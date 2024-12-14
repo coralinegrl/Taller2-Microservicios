@@ -1,0 +1,30 @@
+openapi: 3.0.0
+info:
+  title: Careers Microservice API
+  version: 1.0.0
+  description: API para gestionar carreras y asignaturas
+
+paths:
+  /subjects:
+    post:
+      summary: Crear una asignatura
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                code:
+                  type: string
+                credits:
+                  type: integer
+                semester:
+                  type: integer
+                career:
+                  type: string
+      responses:
+        201:
+          description: Asignatura creada exitosamente

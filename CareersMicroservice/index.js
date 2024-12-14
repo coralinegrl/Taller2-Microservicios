@@ -2,6 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { connectRabbitMQ } = require('./eventPublisher');
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./swagger.yaml');
 
 // Importar rutas
 const careersRouter = require('./routes/careers');
@@ -12,6 +15,9 @@ const app = express();
 
 // Middleware para parsear JSON
 app.use(bodyParser.json());
+
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Conectar a MongoDB
 mongoose.connect('mongodb://localhost:27017/carrerasDB')
