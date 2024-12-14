@@ -19,9 +19,11 @@ exports.routeToUserService = (req, res) => {
   });
 };
 
-// 🔥 Redireccionar solicitudes al Monolito (usando HTTP)
+
 exports.routeToMonolith = async (req, res) => {
   const { method, path, body } = req;
+
+  console.log(`Routing request to monolith: ${method} http://localhost:80${path}`);
 
   try {
     const response = await axios({
@@ -31,7 +33,18 @@ exports.routeToMonolith = async (req, res) => {
     });
     res.json(response.data);
   } catch (error) {
-    console.error('❌ Error al conectar con el Monolito:', error.message);
-    res.status(500).json({ error: error.message });
+    console.error('Error routing to monolith:', error.message);
+    if (error.response) {
+      console.error('Response data:', error.response.data);
+      console.error('Response status:', error.response.status);
+      console.error('Response headers:', error.response.headers);
+      res.status(error.response.status).json(error.response.data);
+    } else if (error.request) {
+      console.error('No response received:', error.request);
+      res.status(500).json({ message: 'No response received from monolith' });
+    } else {
+      console.error('Error setting up request:', error.message);
+      res.status(500).json({ message: 'Error setting up request to monolith' });
+    }
   }
 };
