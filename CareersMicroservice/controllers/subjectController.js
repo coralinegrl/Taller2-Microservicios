@@ -21,16 +21,31 @@ exports.createSubject = async (req, res) => {
     }
 };
 
-exports.getPrerequisitesMapObjects = (req, res) => {
-    res.json({ message: 'Mapa de prerrequisitos con objetos' });
+exports.getPrerequisitesObjects = async (req, res) => {
+    try {
+        // Lógica para obtener el mapa de prerrequisitos (objetos)
+        res.json({ message: 'Mapa de prerrequisitos (objetos)' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error obteniendo prerrequisitos', error });
+    }
 };
 
-exports.getPrerequisitesMap = (req, res) => {
-    res.json({ message: 'Mapa de prerrequisitos' });
+exports.getPrerequisitesMap = async (req, res) => {
+    try {
+        // Lógica para obtener el mapa de prerrequisitos
+        res.json({ message: 'Mapa de prerrequisitos' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error obteniendo prerrequisitos', error });
+    }
 };
 
-exports.getPostrequisitesMap = (req, res) => {
-    res.json({ message: 'Mapa de postrequisitos' });
+exports.getPostrequisitesMap = async (req, res) => {
+    try {
+        // Lógica para obtener el mapa de postrequisitos
+        res.json({ message: 'Mapa de postrequisitos' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error obteniendo postrequisitos', error });
+    }
 };
 
 exports.publishEvent = async (req, res) => {
