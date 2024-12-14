@@ -3,16 +3,21 @@ syntax = "proto3";
 package career;
 
 service CareerService {
-    rpc ListCareers (Empty) returns (CareerList);
+  rpc ListCareers (Empty) returns (CareerListResponse);
+  rpc GetCareer (CareerRequest) returns (CareerResponse);
 }
 
 message Empty {}
 
-message Career {
-    string id = 1;
-    string name = 2;
+message CareerRequest {
+  string id = 1;
 }
 
-message CareerList {
-    repeated Career careers = 1;
+message CareerResponse {
+  string id = 1;
+  string name = 2;
+}
+
+message CareerListResponse {
+  repeated CareerResponse careers = 1;
 }
