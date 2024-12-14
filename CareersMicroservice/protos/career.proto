@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package career;
+
+service CareerService {
+    rpc ListCareers (Empty) returns (CareerList);
+}
+
+message Empty {}
+
+message Career {
+    string id = 1;
+    string name = 2;
+}
+
+message CareerList {
+    repeated Career careers = 1;
+}
