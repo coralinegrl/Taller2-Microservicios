@@ -3,6 +3,10 @@ syntax = "proto3";
 package user;
 
 service UserService {
+  rpc GetProfile(GetProfileRequest) returns (GetProfileResponse);
+  rpc GetMyProgress(GetMyProgressRequest) returns (GetMyProgressResponse);
+  rpc UpdateMyProgress(UpdateMyProgressRequest) returns (UpdateMyProgressResponse);
+  rpc UpdateProfile(UpdateProfileRequest) returns (UpdateProfileResponse);
   rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
   rpc GetUser (GetUserRequest) returns (GetUserResponse);
   rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse);
@@ -69,4 +73,70 @@ message User {
   string segundo_apellido = 4;
   string correo_electronico = 5;
   string contrasena = 6;
+}
+
+message GetProfileRequest {
+  int32 user_id = 1; 
+}
+
+// 🔹 Estructura de la respuesta para GetProfile
+message GetProfileResponse {
+  string message = 1; 
+  Profile profile = 2; 
+}
+
+
+message Profile {
+  int32 id = 1;
+  string nombre = 2;
+  string primer_apellido = 3;
+  string segundo_apellido = 4;
+  string rut = 5;
+  string correo_electronico = 6;
+  string carrera = 7;
+  int32 id_carrera = 8;
+  repeated Progress progreso = 9;
+}
+
+
+message Progress {
+  int32 id = 1;
+  string codigo = 2; 
+  string estado = 3; 
+  string fecha_actualizacion = 4; 
+}
+
+
+message GetMyProgressRequest {
+  int32 user_id = 1;
+}
+
+
+message GetMyProgressResponse {
+  string message = 1;
+  repeated Progress progress = 2;
+}
+
+message UpdateMyProgressRequest {
+  int32 user_id = 1;
+  repeated string cursos_aprobados = 2; 
+  repeated string cursos_eliminados = 3;
+}
+
+
+message UpdateMyProgressResponse {
+  string message = 1;
+}
+
+
+message UpdateProfileRequest {
+  int32 user_id = 1;
+  string nombre = 2;
+  string primer_apellido = 3;
+  string segundo_apellido = 4;
+}
+
+
+message UpdateProfileResponse {
+  string message = 1;
 }

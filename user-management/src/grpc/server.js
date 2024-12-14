@@ -20,8 +20,12 @@ const server = new grpc.Server();
 
 server.addService(userProto.UserService.service, {
   CreateUser: UserController.createUserGRPC,
+  GetProfile: UserController.getProfileGRPC,
   GetUser: UserController.getUserGRPC,
+  GetMyProgress: UserController.getMyProgressGRPC,
   UpdateUser:UserController.updateUserGRPC,
+  UpdateMyProgress: UserController.updateMyProgressGRPC,
+  UpdateProfile: UserController.updateProfileGRPC,
   deleteUser:UserController.deleteUserGRPC,
   listUsers:UserController.listUsersGRPC,
   
