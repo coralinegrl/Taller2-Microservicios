@@ -32,14 +32,44 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use('/auth', (req, res, next) => {
+  console.log(`Solicitud Proxy a: ${req.method} ${req.originalUrl}`);
+  next();
+});
+
+// Proxy hacia el Microservicio de Acceso
+app.use('/auth', createProxyMiddleware({ 
+    target: process.env.ACCESS_SERVICE_URL, 
+    changeOrigin: true,
+    logLevel: 'debug',
+    pathRewrite: { '^/auth': '/auth' }
+}));
+app.use('/auth', createProxyMiddleware({ 
+  target: process.env.ACCESS_SERVICE_URL, 
+  changeOrigin: true,
+  logLevel: 'debug',
+  pathRewrite: { '^/auth': '/auth' }
+}));
+
+
 // Rutas gRPC para el Microservicio de Carreras
-app.get('/careers', (req, res) => {
-    client.ListCareers({}, (error, response) => {
-      if (error) {
-        return res.status(500).send(error);
-      }
-      res.json(response);
-    });
+app.use('/careers', createProxyMiddleware({ 
+  target: process.env.CAREERS_SERVICE_URL, 
+  changeOrigin: true,
+  logLevel: 'debug',
+  pathRewrite: { '^/careers': '/careers' }
+}));
+
+// Rutas gRPC para el Microservicio de Asignaturas
+app.use('/subjects', createProxyMiddleware({ 
+  target: process.env.CAREERS_SERVICE_URL, 
+  changeOrigin: true,
+  logLevel: 'debug',
+  pathRewrite: { '^/subjects': '/subjects' }
+}));
+
+app.get('/', (req, res) => {
+  res.send('API Gateway funcionando correctamente');
 });
 
 app.get('/careers/:id', (req, res) => {
@@ -53,16 +83,7 @@ app.get('/careers/:id', (req, res) => {
     });
 });
 
-// Proxy hacia el Microservicio de Acceso
-app.use('/auth', createProxyMiddleware({ 
-    target: process.env.ACCESS_SERVICE_URL, 
-    changeOrigin: true,
-    logLevel: 'debug', // Nivel de depuración para ver más detalles
-    pathRewrite: { '^/auth': '/auth' } // Asegura que el path no se altera
-}));
 
-
-  
 
 // Iniciar el servidor
 app.listen(PORT, () => {
