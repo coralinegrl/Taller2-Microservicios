@@ -9,3 +9,4 @@ router.put('/update-password', updatePassword);
 router.post('/logout', logout);
 
 module.exports = router;
+
