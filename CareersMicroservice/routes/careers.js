@@ -1,9 +1,10 @@
 const express = require('express');
 const { getAllCareers, createCareer } = require('../controllers/careerController');
-
+const { validateCareerRequest } = require('../validators/careerValidator');
+const { authenticateToken } = require('../middlewares/authMiddleware');
 const router = express.Router();
 
-router.get('/', getAllCareers);
+router.get('/', authenticateToken, validateCareerRequest, getAllCareers);
 router.post('/', createCareer);
 
 module.exports = router;
