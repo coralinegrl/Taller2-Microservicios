@@ -4,9 +4,9 @@ const { publishEvent } = require('../eventPublisher');
 exports.getAllCareers = async (req, res) => {
     try {
         const careers = await Career.find();
-        res.status(200).json(careers);
+        res.json(careers);
     } catch (error) {
-        res.status(500).json({ message: 'Error al obtener las carreras', error });
+        res.status(500).json({ message: 'Error al obtener las carreras', error: error.message });
     }
 };
 
@@ -26,5 +26,14 @@ exports.createCareer = async (req, res) => {
         res.status(201).json(newCareer);
     } catch (error) {
         res.status(500).json({ message: 'Error al crear la carrera', error });
+    }
+};
+
+exports.publishEvent = async (req, res) => {
+    try {
+        await publishEvent('career_created', req.body);
+        res.json({ message: 'Evento publicado' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error al publicar el evento', error });
     }
 };
