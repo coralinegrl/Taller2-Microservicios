@@ -3,10 +3,67 @@ syntax = "proto3";
 package user;
 
 service UserService {
-  rpc CreateUser (User) returns (UserResponse);
-  rpc GetUser (UserRequest) returns (UserResponse);
-  rpc UpdateUser (User) returns (UserResponse);
-  rpc DeleteUser (UserRequest) returns (Empty);
+  rpc GetProfile(GetProfileRequest) returns (GetProfileResponse);
+  rpc GetMyProgress(GetMyProgressRequest) returns (GetMyProgressResponse);
+  rpc UpdateMyProgress(UpdateMyProgressRequest) returns (UpdateMyProgressResponse);
+  rpc UpdateProfile(UpdateProfileRequest) returns (UpdateProfileResponse);
+  rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
+  rpc GetUser (GetUserRequest) returns (GetUserResponse);
+  rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse);
+  rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
+  rpc ListUsers (ListUsersRequest) returns (ListUsersResponse);
+}
+
+message CreateUserRequest {
+  string nombre = 1;
+  string primer_apellido = 2;
+  string segundo_apellido = 3;
+  string correo_electronico = 4;
+  string contrasena = 5;
+}
+
+message CreateUserResponse {
+  string message = 1;
+  int32 user_id = 2;
+}
+
+message GetUserRequest {
+  int32 user_id = 1;
+}
+
+message GetUserResponse {
+  string message = 1;
+  User user = 2;
+}
+
+message UpdateUserRequest {
+  int32 user_id = 1;
+  string nombre = 2;
+  string primer_apellido = 3;
+  string segundo_apellido = 4;
+  string correo_electronico = 5;
+  string contrasena = 6;
+}
+
+message UpdateUserResponse {
+  string message = 1;
+  int32 user_id = 2;
+}
+
+message DeleteUserRequest {
+  int32 user_id = 1;
+}
+
+message DeleteUserResponse {
+  string message = 1;
+  int32 user_id = 2;
+}
+
+message ListUsersRequest {}
+
+message ListUsersResponse {
+  string message = 1;
+  repeated User users = 2;
 }
 
 message User {
@@ -18,15 +75,68 @@ message User {
   string contrasena = 6;
 }
 
-message UserRequest {
-  int32 id = 1;
+message GetProfileRequest {
+  int32 user_id = 1; 
 }
 
-message UserResponse {
+// 🔹 Estructura de la respuesta para GetProfile
+message GetProfileResponse {
+  string message = 1; 
+  Profile profile = 2; 
+}
+
+
+message Profile {
   int32 id = 1;
   string nombre = 2;
   string primer_apellido = 3;
-  string correo_electronico = 4;
+  string segundo_apellido = 4;
+  string rut = 5;
+  string correo_electronico = 6;
+  string carrera = 7;
+  int32 id_carrera = 8;
+  repeated Progress progreso = 9;
 }
 
-message Empty {}
+
+message Progress {
+  int32 id = 1;
+  string codigo = 2; 
+  string estado = 3; 
+  string fecha_actualizacion = 4; 
+}
+
+
+message GetMyProgressRequest {
+  int32 user_id = 1;
+}
+
+
+message GetMyProgressResponse {
+  string message = 1;
+  repeated Progress progress = 2;
+}
+
+message UpdateMyProgressRequest {
+  int32 user_id = 1;
+  repeated string cursos_aprobados = 2; 
+  repeated string cursos_eliminados = 3;
+}
+
+
+message UpdateMyProgressResponse {
+  string message = 1;
+}
+
+
+message UpdateProfileRequest {
+  int32 user_id = 1;
+  string nombre = 2;
+  string primer_apellido = 3;
+  string segundo_apellido = 4;
+}
+
+
+message UpdateProfileResponse {
+  string message = 1;
+}
