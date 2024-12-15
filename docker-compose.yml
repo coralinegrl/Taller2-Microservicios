@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  mongodb-access:
+    image: mongo:latest
+    container_name: mongodb-access
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodb-access-data:/data/db
+
+  rabbitmq-access:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-access
+    ports:
+      - "5673:5672"
+      - "15673:15672" # Interfaz de administración
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+
+  access-microservice:
+    build:
+      context: ./AccessMicroservice
+    container_name: access-microservice
+    ports:
+      - "3002:3002"
+    env_file:
+      - ./AccessMicroservice/.env
+    depends_on:
+      - mongodb-access
+      - rabbitmq-access
+
+  mongodb-careers:
+    image: mongo:latest
+    container_name: mongodb-careers
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-careers-data:/data/db
+
+  rabbitmq-careers:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-careers
+    ports:
+      - "5672:5672"
+      - "15672:15672" # Interfaz de administración
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+
+  careers-microservice:
+    build:
+      context: ./CareersMicroservice
+    container_name: careers-microservice
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./CareersMicroservice/.env
+    depends_on:
+      - mongodb-careers
+      - rabbitmq-careers
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./api-gateway/.env
+    depends_on:
+      - access-microservice
+      - careers-microservice
+
+volumes:
+  mongodb-access-data:
+  mongodb-careers-data:
