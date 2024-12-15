@@ -2,7 +2,7 @@ const amqp = require('amqplib');
 
 const startConsumer = async () => {
     try {
-        const connection = await amqp.connect('amqp://localhost');
+        const connection = await amqp.connect('amqp://rabbitmq-careers');
         const channel = await connection.createChannel();
         const queue = 'user_registered';
 

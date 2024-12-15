@@ -4,7 +4,7 @@ let channel;
 
 const connectRabbitMQ = async () => {
     try {
-        const connection = await amqp.connect('amqp://localhost:5672');
+        const connection = await amqp.connect('amqp://rabbitmq-access');
         channel = await connection.createChannel();
         console.log('Conectado a RabbitMQ');
     } catch (err) {
