@@ -27,6 +27,9 @@ mongoose.connect(process.env.MONGODB_URI)
 
 // Iniciar el servidor
 const PORT = process.env.PORT || 3002;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Microservicio de Gestión de Acceso corriendo en el puerto ${PORT}`);
 });
+
+server.timeout = 10000; // Aumenta el timeout a 10 segundos
+
