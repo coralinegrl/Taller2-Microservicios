@@ -157,3 +157,168 @@ Docker: Contenedor PostgreSQL configurado con un docker-compose.yml.
 Servidor gRPC: Se levanta con:
 
 node src/grpc/server.js
+
+
+
+# 🔐 **AccessMicroservice**
+
+Este microservicio gestiona el registro, inicio de sesión y actualización de contraseñas de los usuarios. Utiliza Node.js, Express, MongoDB y RabbitMQ.
+
+---
+
+## ⚙️ Configuración
+
+### Variables de Entorno (`.env`)
+
+Crea un archivo `.env` con las siguientes variables:
+
+```env
+PORT=3003
+MONGODB_URL=mongodb://localhost:27018/access-db
+JWT_SECRET=supersecretkey
+RABBITMQ_URL=amqp://admin:admin@localhost:5672
+```
+
+### Instalar Dependencias
+npm install
+### Iniciar microservicio
+node index.js
+
+
+## Endpoints
+Base URL: http://localhost:3003/auth
+POST	/register	Registrar un nuevo usuario
+POST	/login	Iniciar sesión
+PUT	/update-password	Actualizar contraseña del usuario
+POST	/logout	Cerrar sesión (revocar token)
+
+# 📦 Dependencias Principales
+Express: Framework para el servidor web.
+Mongoose: ODM para MongoDB.
+Bcrypt: Encriptación de contraseñas.
+JWT: Autenticación mediante tokens.
+RabbitMQ: Broker de mensajes para comunicación entre servicios.
+
+# 🛠️ Tecnologías Utilizadas
+Node.js
+Express
+MongoDB
+RabbitMQ
+
+## Construir y ejecutar con Docker
+docker build -t access-microservice .
+docker run -p 3003:3003 access-microservice
+
+</details>
+
+---
+
+### 📄 APIGateway README
+
+
+# 🌐 APIGateway
+
+Este servicio actúa como puerta de enlace para enrutar solicitudes a los microservicios de acceso y carreras. Utiliza **Node.js**, **Express** y **http-proxy-middleware**.
+
+---
+
+## ⚙️ **Configuración**
+
+### Variables de Entorno (`.env`)
+
+Crea un archivo `.env` con las siguientes variables:
+
+```env
+PORT=4001
+ACCESS_SERVICE_URL=http://localhost:3003
+CAREERS_SERVICE_URL=http://localhost:3004
+```
+
+## Instalar dependencias
+npm install
+## Iniciar API
+node index.js
+
+## 📡 Endpoints
+Base URL: http://localhost:4001
+
+POST	/access/register	Proxy para registrar un usuario
+POST	/access/login	Proxy para iniciar sesión
+PUT	/access/update-password	Proxy para actualizar contraseña
+POST	/access/logout	Proxy para cerrar sesión
+GET	/careers	Proxy para obtener todas las carreras
+
+## Dependencias Principales
+Express: Framework para el servidor web.
+http-proxy-middleware: Middleware para proxy de solicitudes.
+
+## Tecnologías Utilizadas
+Node.js
+Express
+http-proxy-middleware
+
+
+## Docker
+docker build -t api-gateway .
+docker run -p 4001:4000 api-gateway
+
+
+
+---
+
+### 📄 **CareersMicroservice**
+
+<details>
+<summary>Haz clic para ver el contenido</summary>
+
+
+# 🎓 **CareersMicroservice**
+
+Este microservicio gestiona información sobre carreras universitarias. Utiliza **Node.js**, **Express**, **MongoDB** y **RabbitMQ**.
+
+---
+
+## ⚙️ **Configuración**
+
+### Variables de Entorno (`.env`)
+
+Crea un archivo `.env` con las siguientes variables:
+
+```env
+PORT=3004
+MONGODB_URL=mongodb://localhost:27017/careers-db
+RABBITMQ_URL=amqp://admin:admin@localhost:5672
+```
+
+Instalar dependencias:
+npm install
+
+Iniciar:
+node index.js
+
+## Endpoints
+Base URL: http://localhost:3004/careers
+GET	/	Obtener todas las carreras
+POST	/	Crear una nueva carrera
+GET	/:id	Obtener una carrera por su ID
+PUT	/:id	Actualizar una carrera
+DELETE	/:id	Eliminar una carrera
+
+## Dependencias principales
+Express: Framework para el servidor web.
+Mongoose: ODM para MongoDB.
+RabbitMQ: Broker de mensajes para comunicación entre servicios.
+
+## Tecnologías utilizadas
+Node.js
+Express
+MongoDB
+RabbitMQ
+
+## Docker
+docker build -t careers-microservice .
+docker run -p 3004:3004 careers-microservice
+
+
+
+
