@@ -1,10 +1,10 @@
 const amqp = require('amqplib');
-
+const RABBITMQ_URL = 'amqp://admin:admin@localhost:5672/';
 let channel;
 
 const connectRabbitMQ = async () => {
     try {
-        const connection = await amqp.connect('amqp://localhost:5672');
+        const connection = await amqp.connect(RABBITMQ_URL);
         channel = await connection.createChannel();
         console.log('Conectado a RabbitMQ');
     } catch (err) {

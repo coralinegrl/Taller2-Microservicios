@@ -4,24 +4,36 @@ const User = require('../models/User');
 const { publishEvent } = require('../eventPublisher');
 const BlacklistedToken = require('../models/BlacklistedToken');
 
+
 // Registrar un nuevo usuario
 exports.register = async (req, res) => {
     try {
         const { name, email, password } = req.body;
+        console.log(`Datos recibidos: name=${name}, email=${email}`);
+
+        const userExists = await User.findOne({ email });
+        console.log(`¿Usuario existente?: ${userExists}`);
+
+        if (userExists) {
+            return res.status(409).json({ message: 'El usuario ya existe' });
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
+        console.log(`Contraseña hasheada: ${hashedPassword}`);
 
         const newUser = new User({ name, email, password: hashedPassword });
         await newUser.save();
+        console.log(`Usuario guardado en la base de datos: ${newUser}`);
 
-        // Emitir evento a RabbitMQ
         await publishEvent('user_registered', { email });
 
         res.status(201).json({ message: 'Usuario registrado exitosamente' });
     } catch (error) {
-        console.error(error);
+        console.error('Error en el registro:', error);
         res.status(500).json({ message: 'Error registrando usuario', error });
     }
 };
+
 
 // Iniciar sesión
 exports.login = async (req, res) => {

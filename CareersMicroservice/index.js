@@ -35,7 +35,7 @@ app.use('/careers', careersRouter); // Rutas de carreras
 app.use('/subjects', subjectsRouter); // Rutas de asignaturas
 
 // Iniciar el servidor
-const PORT = 3001;
+const PORT = 3004;
 app.listen(PORT, () => {
     console.log(`Microservicio de Carreras corriendo en el puerto ${PORT}`);
 });

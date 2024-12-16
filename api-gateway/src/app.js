@@ -1,10 +1,12 @@
 const express = require('express');
+const app = express();
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const logMiddleware = require('./middlewares/logMiddleware');
 const bodyParser = require('body-parser');
 const routes = require('./routes/routes');
-const app = express();
+
 require('dotenv').config();
+app.use(express.json());
 app.use(bodyParser.json());
 
 // Middleware para logging
@@ -13,14 +15,25 @@ app.use(logMiddleware);
 // Rutas principales
 app.use('/', routes);
 
+app.use('/access', createProxyMiddleware({
+  target: 'http://localhost:3003',  // Verifica que la URL sea correcta
+  changeOrigin: true,
+  onProxyReq: (proxyReq, req, res) => {
+    console.log(`Proxying request to: ${proxyReq.url}`);
+  },
+  onError: (err, req, res) => {
+    console.error(`Proxy error: ${err.message}`);
+    res.status(500).send('Proxy Error');
+  },
+}));
+
+
 app.use((req, res, next) => {
   console.log(`Middleware general: ${req.method} ${req.originalUrl}`);
   next();
 });
 
-app.post('/auth/test', (req, res) => {
-  res.json({ message: 'Ruta de prueba en API Gateway' });
-});
+
 
 app.use('/auth/login', (req, res, next) => {
   console.log(`Solicitud a /auth/login recibida en API Gateway`);

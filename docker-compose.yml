@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+  # MongoDB para AccessMicroservice
   mongodb-access:
     image: mongo:latest
     container_name: mongodb-access
@@ -9,28 +10,18 @@ services:
     volumes:
       - mongodb-access-data:/data/db
 
+  # RabbitMQ para AccessMicroservice
   rabbitmq-access:
     image: rabbitmq:3-management
     container_name: rabbitmq-access
     ports:
       - "5673:5672"
-      - "15673:15672" # Interfaz de administración
+      - "15673:15672"  # Interfaz de administración
     environment:
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=admin
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
 
-  access-microservice:
-    build:
-      context: ./AccessMicroservice
-    container_name: access-microservice
-    ports:
-      - "3002:3002"
-    env_file:
-      - ./AccessMicroservice/.env
-    depends_on:
-      - mongodb-access
-      - rabbitmq-access
-
+  # MongoDB para CareersMicroservice
   mongodb-careers:
     image: mongo:latest
     container_name: mongodb-careers
@@ -39,39 +30,16 @@ services:
     volumes:
       - mongodb-careers-data:/data/db
 
+  # RabbitMQ para CareersMicroservice
   rabbitmq-careers:
     image: rabbitmq:3-management
     container_name: rabbitmq-careers
     ports:
       - "5672:5672"
-      - "15672:15672" # Interfaz de administración
+      - "15672:15672"  # Interfaz de administración
     environment:
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=admin
-
-  careers-microservice:
-    build:
-      context: ./CareersMicroservice
-    container_name: careers-microservice
-    ports:
-      - "3001:3001"
-    env_file:
-      - ./CareersMicroservice/.env
-    depends_on:
-      - mongodb-careers
-      - rabbitmq-careers
-
-  api-gateway:
-    build:
-      context: ./api-gateway
-    container_name: api-gateway
-    ports:
-      - "4000:4000"
-    env_file:
-      - ./api-gateway/.env
-    depends_on:
-      - access-microservice
-      - careers-microservice
 
 volumes:
   mongodb-access-data:

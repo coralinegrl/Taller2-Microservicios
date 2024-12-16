@@ -1,20 +1,17 @@
-# Usa la imagen oficial de Node.js
+# AccessMicroservice Dockerfile
 FROM node:20
 
-# Configura el directorio de trabajo
 WORKDIR /usr/src/app
 
-# Copia el package.json y package-lock.json
 COPY package*.json ./
 
-# Instala las dependencias
 RUN npm install
 
-# Copia el resto de los archivos del microservicio
+# Instalar bcrypt dentro del contenedor
+RUN npm install bcrypt --build-from-source
+
 COPY . .
 
-# Expone el puerto en el que corre el microservicio
-EXPOSE 3002
+EXPOSE 3003
 
-# Comando para iniciar el microservicio
 CMD ["node", "index.js"]
