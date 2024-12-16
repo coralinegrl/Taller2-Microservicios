@@ -1,0 +1,13 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1734305867947,1530,GetCareer,200, success,Thread Group 1-1,text,true,,52,0,1,1,null,0,0,0
+1734305885452,1142,GetCareer,200, success,Thread Group 1-1,text,true,,52,0,1,1,null,0,0,0
+1734305942124,1019,GetCareer,200, success,Thread Group 1-1,text,true,,52,0,1,1,null,0,0,0
+1734305957707,1005,GetCareer,200, success,Thread Group 1-1,text,true,,52,0,1,1,null,0,0,0
+1734305973263,1104,GetCareer,200, success,Thread Group 1-1,text,true,,52,0,1,1,null,0,0,0
+1734305993667,932,GetCareer,200, success,Thread Group 1-1,text,true,,52,0,1,1,null,0,0,0
+1734306011926,1200,GetCareer,200, success,Thread Group 1-1,text,true,,52,0,1,1,null,0,0,0
+1734306031152,1013,GetCareer,200, success,Thread Group 1-1,text,true,,52,0,1,1,null,0,0,0
+1734306049363,993,GetCareer,200, success,Thread Group 1-1,text,true,,52,0,1,1,null,0,0,0
+1734306073936,990,GetCareer,200, success,Thread Group 1-1,text,true,,52,0,1,1,null,0,0,0
+1734306313180,1437,GetCareer,200, success,Thread Group 1-1,text,true,,52,0,1,1,null,0,0,0
+1734306384743,1037,GetCareer,200, success,Thread Group 1-1,text,true,,52,0,1,1,null,0,0,0
